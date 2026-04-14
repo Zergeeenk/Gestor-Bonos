@@ -3,289 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Bonos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <title>Registro de Cargas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-base: #06090D;
-            --bg-surface: #0B0F16;
-            --bg-card: #10161F;
-            --bg-card-hover: #141C27;
-            --bg-input: #0D1320;
-            --border-subtle: rgba(255,255,255,0.05);
-            --border-default: rgba(255,255,255,0.08);
-            --border-hover: rgba(255,255,255,0.14);
-            --border-glow: rgba(0,230,160,0.18);
-            --accent: #00E6A0;
-            --accent-dim: rgba(0,230,160,0.12);
-            --accent-glow: 0 0 18px rgba(0,230,160,0.22);
-            --color-done: #EF4444;
-            --color-done-dim: rgba(239,68,68,0.12);
-            --text-primary: #EFF2F7;
-            --text-secondary: #5A6478;
-            --text-muted: #2E3646;
-            --font-ui: 'DM Sans', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --r-sm: 6px; --r-md: 10px; --r-lg: 14px;
-            --shadow-card: 0 2px 16px rgba(0,0,0,0.5);
-            --t: 0.18s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font-ui);
-            background: var(--bg-base);
-            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: radial-gradient(circle at 50% 40%, rgba(0,230,160,0.03) 0%, transparent 60%);
+            padding: 20px;
         }
 
-        ::selection { background: var(--accent-dim); color: var(--accent); }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 10px; }
-
-        .container { width: 100%; max-width: 500px; padding: 20px; }
-
-        .app-card {
-            background: var(--bg-card);
-            border: 0.5px solid var(--border-default);
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: var(--shadow-card);
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(30, 30, 46, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
             margin-bottom: 24px;
+            color: #e2e8f0;
         }
-        .app-title {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            letter-spacing: 0.08em;
-        }
-        .app-title .bold { font-weight: 700; }
-        .app-title .light { font-weight: 400; color: var(--text-secondary); }
 
-        .field { margin-bottom: 16px; }
+        .field {
+            margin-bottom: 18px;
+        }
+
         .field label {
             display: block;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
-            color: var(--text-secondary);
+            color: #a0aec0;
             margin-bottom: 6px;
         }
-        .field input {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-input);
-            border: 0.5px solid var(--border-default);
-            border-radius: var(--r-sm);
-            color: var(--text-primary);
-            font-family: var(--font-ui);
-            font-size: 13px;
-            outline: none;
-            transition: border-color var(--t), box-shadow var(--t);
-        }
-        .field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-        .field input::placeholder { color: var(--text-muted); }
 
-        .btn-save {
+        .field input,
+        .field select {
             width: 100%;
-            padding: 11px;
-            background: var(--accent);
-            color: var(--bg-base);
+            padding: 12px;
+            background: #1e1e2e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0aec0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        .field input::placeholder { color: #555; }
+
+        .field select option {
+            background: #1e1e2e;
+            color: #fff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
             border: none;
-            border-radius: var(--r-sm);
-            font-family: var(--font-ui);
-            font-size: 13px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all var(--t);
+            transition: all 0.2s;
+            margin-top: 4px;
         }
-        .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .btn-save:active { transform: translateY(0); }
-        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .feedback {
-            font-size: 13px;
+        .btn-submit:hover {
+            filter: brightness(1.15);
+            transform: scale(1.02);
+        }
+
+        .btn-submit:active {
+            transform: scale(1);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            filter: none;
+        }
+
+        .banner {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             text-align: center;
-            margin-top: 12px;
-            padding: 8px;
-            border-radius: var(--r-sm);
             display: none;
         }
-        .feedback.error { color: var(--color-done); background: var(--color-done-dim); display: block; }
-        .feedback.success { color: var(--accent); background: var(--accent-dim); display: block; }
 
-        .divider {
-            border: none;
-            border-top: 0.5px solid var(--border-subtle);
-            margin: 24px 0;
+        .banner.success {
+            background: #065f46;
+            color: #fff;
+            display: block;
         }
 
-        .section-title {
+        .banner.error {
+            background: #7f1d1d;
+            color: #fff;
+            display: block;
+        }
+
+        .inline-error {
             font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-bottom: 12px;
+            color: #f87171;
+            margin-top: 4px;
+            display: none;
         }
 
-        .records-list {
-            list-style: none;
-            max-height: 340px;
-            overflow-y: auto;
-        }
-
-        .record-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: var(--bg-input);
-            border: 0.5px solid var(--border-subtle);
-            border-radius: var(--r-md);
-            margin-bottom: 6px;
-            transition: all var(--t);
-        }
-        .record-item:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-card-hover);
-        }
-        .record-user {
-            font-size: 13.5px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        .record-amount {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 13px;
-            padding: 28px 0;
+        .inline-error.show {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="app-card">
-            <div class="app-header">
-                <div class="app-title">
-                    <span class="bold">GESTOR</span> <span class="light">BONOS</span>
-                </div>
+    <div class="card">
+        <div class="card-title">Registro de Cargas</div>
+
+        <form id="form" novalidate>
+            <div class="field">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
+                <div class="inline-error" id="err-usuario">Este campo es obligatorio</div>
             </div>
 
             <div class="field">
-                <label>Usuario</label>
-                <input type="text" id="input-usuario" placeholder="Nombre del usuario">
+                <label for="monto">Monto</label>
+                <input type="number" id="monto" placeholder="Ingresa el monto" min="0" step="0.01" required>
+                <div class="inline-error" id="err-monto">Este campo es obligatorio</div>
             </div>
+
             <div class="field">
-                <label>Monto</label>
-                <input type="number" id="input-monto" placeholder="0.00" step="0.01">
+                <label for="agencia">Agencia</label>
+                <select id="agencia" required>
+                    <option value="" disabled selected>Selecciona una agencia</option>
+                    <option value="BetArgento">BetArgento</option>
+                    <option value="AlantisPlay">AlantisPlay</option>
+                    <option value="Mijugada">Mijugada</option>
+                </select>
+                <div class="inline-error" id="err-agencia">Selecciona una agencia</div>
             </div>
-            <button class="btn-save" id="btn-guardar">Guardar</button>
-            <div class="feedback" id="form-feedback"></div>
 
-            <hr class="divider">
+            <button type="submit" class="btn-submit" id="btn-submit">Guardar Registro</button>
+        </form>
 
-            <div class="section-title">Ultimos registros</div>
-            <ul class="records-list" id="records-list">
-                <li class="empty-state">Cargando...</li>
-            </ul>
-        </div>
+        <div class="banner" id="banner"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
     <script>
+        // ============================================================
+        // CONFIGURACION — Editar estas dos lineas
+        // ============================================================
+        const SUPABASE_URL = 'https://ybapmcjydxuzihtfbpuc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_rPYIGBIToZwhkuKHpVxgJw_eTjOjhHH';
+        // ============================================================
+
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const inputUsuario = document.getElementById('input-usuario');
-        const inputMonto = document.getElementById('input-monto');
-        const btnGuardar = document.getElementById('btn-guardar');
-        const formFeedback = document.getElementById('form-feedback');
-        const recordsList = document.getElementById('records-list');
+        const form = document.getElementById('form');
+        const btnSubmit = document.getElementById('btn-submit');
+        const banner = document.getElementById('banner');
 
-        btnGuardar.addEventListener('click', saveRecord);
-        inputMonto.addEventListener('keydown', e => { if (e.key === 'Enter') saveRecord(); });
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        function showFeedback(msg, type) {
-            formFeedback.textContent = msg;
-            formFeedback.className = 'feedback ' + type;
-            if (type === 'success') setTimeout(() => { formFeedback.className = 'feedback'; }, 2500);
-        }
+            // Clear errors
+            document.querySelectorAll('.inline-error').forEach(el => el.classList.remove('show'));
+            banner.className = 'banner';
 
-        async function saveRecord() {
-            formFeedback.className = 'feedback';
-            const usuario = inputUsuario.value.trim();
-            const monto = parseFloat(inputMonto.value);
+            // Get values
+            const usuario = document.getElementById('usuario').value.trim();
+            const monto = document.getElementById('monto').value;
+            const agencia = document.getElementById('agencia').value;
 
-            if (!usuario || isNaN(monto)) {
-                showFeedback('Completa ambos campos correctamente', 'error');
-                return;
-            }
+            // Validate
+            let valid = true;
+            if (!usuario) { document.getElementById('err-usuario').classList.add('show'); valid = false; }
+            if (!monto || parseFloat(monto) < 0) { document.getElementById('err-monto').classList.add('show'); valid = false; }
+            if (!agencia) { document.getElementById('err-agencia').classList.add('show'); valid = false; }
+            if (!valid) return;
 
-            btnGuardar.disabled = true;
-            const { error } = await supabase.from('cargas').insert({ usuario, monto });
-            btnGuardar.disabled = false;
+            // Generate date and time
+            const now = new Date();
+            const dia = String(now.getDate()).padStart(2, '0') + '/' +
+                        String(now.getMonth() + 1).padStart(2, '0') + '/' +
+                        now.getFullYear();
+            const hora = String(now.getHours()).padStart(2, '0') + ':' +
+                         String(now.getMinutes()).padStart(2, '0') + ':' +
+                         String(now.getSeconds()).padStart(2, '0');
+
+            // Build record
+            const record = {
+                usuario: usuario,
+                monto: parseFloat(monto),
+                agencia: agencia,
+                dia: dia,
+                hora: hora
+            };
+
+            // Insert
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Guardando...';
+
+            const { error } = await supabase.from('registros').insert([record]);
+
+            btnSubmit.disabled = false;
+            btnSubmit.textContent = 'Guardar Registro';
 
             if (error) {
-                showFeedback('Error: ' + error.message, 'error');
-                return;
+                console.error('Supabase error:', error);
+                banner.textContent = 'Error al guardar. Intenta de nuevo.';
+                banner.className = 'banner error';
+            } else {
+                banner.textContent = 'Registro guardado correctamente';
+                banner.className = 'banner success';
+                form.reset();
             }
 
-            showFeedback('Registro guardado', 'success');
-            inputUsuario.value = '';
-            inputMonto.value = '';
-            inputUsuario.focus();
-            loadRecords();
-        }
-
-        async function loadRecords() {
-            const { data, error } = await supabase
-                .from('cargas')
-                .select('usuario, monto')
-                .order('created_at', { ascending: false })
-                .limit(50);
-
-            if (error) {
-                recordsList.innerHTML = '<li class="empty-state">Error al cargar registros</li>';
-                return;
-            }
-            if (!data || data.length === 0) {
-                recordsList.innerHTML = '<li class="empty-state">Sin registros</li>';
-                return;
-            }
-            recordsList.innerHTML = data.map(r => `
-                <li class="record-item">
-                    <span class="record-user">${escHtml(r.usuario)}</span>
-                    <span class="record-amount">$${Number(r.monto).toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
-                </li>
-            `).join('');
-        }
-
-        function escHtml(t) {
-            const d = document.createElement('div');
-            d.textContent = t;
-            return d.innerHTML;
-        }
-
-        loadRecords();
+            setTimeout(function() { banner.className = 'banner'; }, 3000);
+        });
     </script>
 </body>
 </html>
