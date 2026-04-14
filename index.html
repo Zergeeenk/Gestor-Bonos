@@ -150,13 +150,18 @@
             right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
+            background: none !important;
+            border: none !important;
             cursor: pointer;
             padding: 4px;
-            width: auto;
+            width: auto !important;
             display: flex;
             align-items: center;
+            border-radius: 4px;
+        }
+
+        .toggle-pass:hover {
+            background: none !important;
         }
 
         .toggle-pass svg {
