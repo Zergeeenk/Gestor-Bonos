@@ -348,48 +348,43 @@
         }
         .versus-title [data-lucide] { color: #7c3aed; }
 
-        .versus-row {
-            display: flex; gap: 12px; margin-bottom: 16px;
+        .agency-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
         }
 
-        .versus-col { flex: 1; text-align: center; }
-
-        .versus-col select {
-            width: 100%; padding: 9px 12px; background: #1e1e2e;
-            border: 1px solid #333; border-radius: 8px; color: #fff;
-            font-family: 'Inter', sans-serif; font-size: 13px;
-            outline: none; -webkit-appearance: none; appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 10px center;
-            padding-right: 30px; transition: border-color 0.2s;
+        .agency-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px; padding: 16px; text-align: center;
+            transition: border-color 0.2s;
         }
-        .versus-col select:focus { border-color: #7c3aed; }
-        .versus-col select option { background: #1e1e2e; color: #fff; }
+        .agency-card:hover { border-color: rgba(124,58,237,0.2); }
+        .agency-card.best { border-color: rgba(52,211,153,0.3); }
+        .agency-card.worst { border-color: rgba(248,113,113,0.3); }
 
-        .versus-amount {
-            font-size: 24px; font-weight: 700; margin-top: 12px;
-            transition: color 0.3s;
+        .agency-name {
+            font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #e2e8f0;
         }
-        .versus-amount.win { color: #34d399; }
-        .versus-amount.lose { color: #f87171; }
-        .versus-amount.tie { color: #e2e8f0; }
+        .agency-card.best .agency-name { color: #34d399; }
+        .agency-card.worst .agency-name { color: #f87171; }
 
-        .versus-vs {
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700; color: #4a5568; padding-top: 28px;
-        }
+        .agency-stat { margin-bottom: 8px; }
+        .agency-stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+        .agency-stat-value { font-size: 18px; font-weight: 700; color: #e2e8f0; }
+        .agency-card.best .agency-stat-value { color: #34d399; }
+        .agency-card.worst .agency-stat-value { color: #f87171; }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 500px) {
             .stats-grid { grid-template-columns: 1fr; }
+            .agency-grid { grid-template-columns: 1fr; }
             .tab span { display: none; }
             .tab { padding: 10px 12px; }
         }
 
         @media (min-width: 768px) {
             .container { max-width: 720px; }
-            .versus-amount { font-size: 28px; }
-            .versus-col select { font-size: 14px; padding: 11px 14px; }
+            .agency-stat-value { font-size: 20px; }
         }
 
         @media (min-width: 1024px) {
@@ -403,9 +398,8 @@
             thead th { position: sticky; top: 0; background: rgba(30,30,46,0.98); z-index: 2; }
             tbody td { white-space: normal; }
 
-            .versus-amount { font-size: 32px; }
-            .versus-col select { font-size: 15px; padding: 12px 16px; }
-            .versus-row { gap: 24px; }
+            .agency-stat-value { font-size: 22px; }
+            .agency-name { font-size: 16px; }
         }
 
         /* ===== ANIMATIONS ===== */
@@ -498,7 +492,7 @@
                 </div>
 
                 <!-- TAB: NUEVA CARGA -->
-                <div class="tab-content active" id="tab-nueva-carga" style="max-width:420px">
+                <div class="tab-content active" id="tab-nueva-carga" style="max-width:420px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 260px)">
                     <form id="form" novalidate>
                         <div class="field">
                             <label><i data-lucide="user"></i> Usuario</label>
@@ -580,18 +574,8 @@
                     </div>
 
                     <div class="versus-section">
-                        <div class="versus-title"><i data-lucide="swords"></i> Versus</div>
-                        <div class="versus-row">
-                            <div class="versus-col">
-                                <select id="vs-user-a"><option value="">Elegir usuario</option></select>
-                                <div class="versus-amount tie" id="vs-amount-a">$0</div>
-                            </div>
-                            <div class="versus-vs">VS</div>
-                            <div class="versus-col">
-                                <select id="vs-user-b"><option value="">Elegir usuario</option></select>
-                                <div class="versus-amount tie" id="vs-amount-b">$0</div>
-                            </div>
-                        </div>
+                        <div class="versus-title"><i data-lucide="swords"></i> Agencias</div>
+                        <div class="agency-grid" id="agency-grid"></div>
                     </div>
                 </div>
 
@@ -881,49 +865,43 @@
                 document.getElementById('dash-last-sub').textContent = '';
             }
 
-            var vsA = document.getElementById('vs-user-a');
-            var vsB = document.getElementById('vs-user-b');
-            var prevA = vsA.value;
-            var prevB = vsB.value;
+            // Agency comparison
+            var agencies = ['BetArgento', 'AlantisPlay', 'Mijugada'];
+            var agencyData = {};
+            agencies.forEach(function(a) { agencyData[a] = { total: 0, count: 0, users: [] }; });
 
-            var opts = '<option value="">Elegir usuario</option>' +
-                users.map(function(u) { return '<option value="' + esc(u) + '">' + esc(u) + '</option>'; }).join('');
-            vsA.innerHTML = opts;
-            vsB.innerHTML = opts;
+            allRecords.forEach(function(r) {
+                var d = agencyData[r.agencia];
+                if (d) {
+                    d.total += Number(r.monto);
+                    d.count++;
+                    if (d.users.indexOf(r.usuario) === -1) d.users.push(r.usuario);
+                }
+            });
 
-            if (prevA) vsA.value = prevA;
-            if (prevB) vsB.value = prevB;
+            var totals = agencies.map(function(a) { return agencyData[a].total; });
+            var maxT = Math.max.apply(null, totals);
+            var minT = Math.min.apply(null, totals);
+            var allEqual = maxT === minT;
 
-            updateVersus(userTotals);
-
-            vsA.onchange = function() { updateVersus(userTotals); };
-            vsB.onchange = function() { updateVersus(userTotals); };
+            var grid = document.getElementById('agency-grid');
+            grid.innerHTML = agencies.map(function(a) {
+                var d = agencyData[a];
+                var avg = d.count > 0 ? d.total / d.count : 0;
+                var cls = '';
+                if (!allEqual) {
+                    if (d.total === maxT) cls = ' best';
+                    else if (d.total === minT) cls = ' worst';
+                }
+                return '<div class="agency-card' + cls + '">' +
+                    '<div class="agency-name">' + esc(a) + '</div>' +
+                    '<div class="agency-stat"><div class="agency-stat-label">Usuarios</div><div class="agency-stat-value">' + d.users.length + '</div></div>' +
+                    '<div class="agency-stat"><div class="agency-stat-label">Total</div><div class="agency-stat-value">$' + fmtAR(d.total) + '</div></div>' +
+                    '<div class="agency-stat"><div class="agency-stat-label">Promedio</div><div class="agency-stat-value">$' + fmtAR(avg) + '</div></div>' +
+                '</div>';
+            }).join('');
 
             lucide.createIcons();
-        }
-
-        function updateVersus(userTotals) {
-            var a = document.getElementById('vs-user-a').value;
-            var b = document.getElementById('vs-user-b').value;
-            var amtA = a ? (userTotals[a] || 0) : 0;
-            var amtB = b ? (userTotals[b] || 0) : 0;
-
-            var elA = document.getElementById('vs-amount-a');
-            var elB = document.getElementById('vs-amount-b');
-
-            elA.textContent = '$' + fmtAR(amtA);
-            elB.textContent = '$' + fmtAR(amtB);
-
-            if (!a || !b || amtA === amtB) {
-                elA.className = 'versus-amount tie';
-                elB.className = 'versus-amount tie';
-            } else if (amtA > amtB) {
-                elA.className = 'versus-amount win';
-                elB.className = 'versus-amount lose';
-            } else {
-                elA.className = 'versus-amount lose';
-                elB.className = 'versus-amount win';
-            }
         }
 
         // ===== UTILS =====
