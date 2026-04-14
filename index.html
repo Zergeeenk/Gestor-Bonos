@@ -442,8 +442,31 @@
         </div>
     </div>
 
+    <!-- DEBUG LOG -->
+    <div id="debug-log" style="position:fixed;bottom:0;left:0;right:0;max-height:180px;overflow-y:auto;background:#000;color:#0f0;font-family:monospace;font-size:11px;padding:8px;z-index:9999;border-top:1px solid #333;"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // ============================================================
+        // DEBUG
+        // ============================================================
+        function log(msg) {
+            var el = document.getElementById('debug-log');
+            if (el) {
+                var t = new Date().toTimeString().slice(0,8);
+                el.innerHTML += '<div>[' + t + '] ' + msg + '</div>';
+                el.scrollTop = el.scrollHeight;
+            }
+            console.log('[DEBUG]', msg);
+        }
+        window.onerror = function(msg, src, line, col, err) {
+            log('ERROR: ' + msg + ' (line ' + line + ')');
+        };
+
+        log('Script start');
+        log('Lucide loaded: ' + (typeof lucide !== 'undefined'));
+        log('Supabase loaded: ' + (typeof window.supabase !== 'undefined'));
+
         // ============================================================
         // CONFIGURACION
         // ============================================================
@@ -453,10 +476,13 @@
         // ============================================================
 
         let supabase;
-        try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
-        catch(e) { console.error('Supabase init error:', e); }
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            log('Supabase client: OK');
+        } catch(e) { log('Supabase client FAILED: ' + e.message); }
 
-        try { lucide.createIcons(); } catch(e) { console.error('Lucide init error:', e); }
+        try { lucide.createIcons(); log('Lucide icons: OK'); }
+        catch(e) { log('Lucide icons FAILED: ' + e.message); }
 
         const loginView = document.getElementById('login-view');
         const loginCard = document.getElementById('login-card');
@@ -475,6 +501,8 @@
         const formFeedback = document.getElementById('form-feedback');
         const recordsList = document.getElementById('records-list');
 
+        log('Elements found - loginView:' + !!loginView + ' loginCard:' + !!loginCard + ' accessKeyInput:' + !!accessKeyInput + ' btnLogin:' + !!btnLogin + ' appView:' + !!appView);
+
         // Toggle password visibility
         togglePass.addEventListener('click', () => {
             const isPass = accessKeyInput.type === 'password';
@@ -491,17 +519,20 @@
         });
 
         // Login
-        btnLogin.addEventListener('click', doLogin);
-        accessKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+        log('Attaching click listener to btnLogin');
+        btnLogin.addEventListener('click', function() { log('btnLogin CLICKED'); doLogin(); });
+        accessKeyInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { log('ENTER pressed'); doLogin(); } });
 
         function reloadIcons() {
             try { lucide.createIcons(); } catch(e) {}
         }
 
         function doLogin() {
+            log('doLogin called - disabled:' + btnLogin.disabled + ' value:"' + accessKeyInput.value + '" expected:"' + ACCESS_KEY + '" match:' + (accessKeyInput.value === ACCESS_KEY));
             if (btnLogin.disabled) return;
 
             if (accessKeyInput.value === ACCESS_KEY) {
+                log('LOGIN SUCCESS - starting transition');
                 // Success feedback
                 accessKeyInput.classList.remove('input-error');
                 accessKeyInput.classList.add('input-success');
@@ -530,7 +561,7 @@
                     loadRecords();
                 }, 1000);
             } else {
-                // Error feedback
+                log('LOGIN FAILED - wrong key');
                 accessKeyInput.classList.remove('input-success');
                 accessKeyInput.classList.add('input-error');
                 loginLogo.classList.remove('success-state');
