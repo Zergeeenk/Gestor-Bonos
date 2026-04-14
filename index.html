@@ -271,7 +271,7 @@
             margin-bottom: 16px;
         }
 
-        button {
+        .btn-action {
             width: 100%;
             padding: 10px 14px;
             background-color: #00c896;
@@ -284,11 +284,11 @@
             transition: background-color 0.2s;
         }
 
-        button:hover {
+        .btn-action:hover {
             background-color: #00b383;
         }
 
-        button:disabled {
+        .btn-action:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
@@ -430,7 +430,7 @@
                     <label for="input-monto">Monto</label>
                     <input type="number" id="input-monto" placeholder="0.00" step="0.01">
                 </div>
-                <button id="btn-guardar">Guardar</button>
+                <button class="btn-action" id="btn-guardar">Guardar</button>
                 <div class="error-msg" id="form-error"></div>
                 <div class="success-msg" id="form-success">Registro guardado</div>
 
