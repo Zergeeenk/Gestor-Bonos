@@ -19,6 +19,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .container {
@@ -27,11 +28,196 @@
             padding: 20px;
         }
 
+        /* ===== LOGIN ===== */
+        .login-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            padding: 40px 32px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        }
+
+        .login-card.shake {
+            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        .login-card.success-glow {
+            border-color: #00c896;
+            box-shadow: 0 0 30px rgba(0, 200, 150, 0.15), 0 0 60px rgba(0, 200, 150, 0.05);
+        }
+
+        .login-card.exit {
+            transform: scale(0.95) translateY(-20px);
+            opacity: 0;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 50%, 90% { transform: translateX(-6px); }
+            30%, 70% { transform: translateX(6px); }
+        }
+
+        .login-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00c896 0%, #00a67a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .login-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #0d1117;
+            transition: fill 0.3s ease;
+        }
+
+        .login-icon.error-icon {
+            background: linear-gradient(135deg, #f85149 0%, #da3633 100%);
+        }
+
+        .login-icon.success-icon {
+            background: linear-gradient(135deg, #00c896 0%, #00a67a 100%);
+            transform: scale(1.1);
+        }
+
+        .login-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            font-size: 0.85rem;
+            color: #484f58;
+            text-align: center;
+            margin-bottom: 28px;
+            transition: color 0.3s ease;
+        }
+
+        .login-subtitle.error-text {
+            color: #f85149;
+        }
+
+        .login-subtitle.success-text {
+            color: #00c896;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 46px 14px 16px;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #00c896;
+            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.1);
+        }
+
+        .input-wrapper input.input-error {
+            border-color: #f85149;
+            box-shadow: 0 0 0 3px rgba(248, 81, 73, 0.1);
+        }
+
+        .input-wrapper input.input-success {
+            border-color: #00c896;
+            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.15);
+        }
+
+        .input-wrapper input::placeholder {
+            color: #484f58;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            width: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-pass svg {
+            width: 18px;
+            height: 18px;
+            fill: #484f58;
+            transition: fill 0.2s;
+        }
+
+        .toggle-pass:hover svg {
+            fill: #8b949e;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: #00c896;
+            color: #0d1117;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            background-color: #00b383;
+            transform: translateY(-1px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== APP ===== */
         .card {
             background-color: #161b22;
             border: 1px solid #30363d;
-            border-radius: 10px;
+            border-radius: 14px;
             padding: 32px;
+        }
+
+        #app-view {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #app-view.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
         h1 {
@@ -198,24 +384,28 @@
             border-color: #f85149;
             background-color: transparent;
         }
-
-        #app-view {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- LOGIN -->
         <div id="login-view">
-            <div class="card">
-                <h1>Panel de Cargas</h1>
-                <div class="field">
-                    <label for="access-key">Access Key</label>
-                    <input type="password" id="access-key" placeholder="Ingresa tu clave de acceso">
+            <div class="login-card" id="login-card">
+                <div class="login-icon" id="login-icon">
+                    <svg id="icon-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
+                    <svg id="icon-check" viewBox="0 0 24 24" style="display:none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    <svg id="icon-x" viewBox="0 0 24 24" style="display:none"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
                 </div>
-                <button id="btn-login">Ingresar</button>
-                <div class="error-msg" id="login-error">Clave incorrecta</div>
+                <div class="login-title">Panel de Cargas</div>
+                <div class="login-subtitle" id="login-subtitle">Ingresa tu clave de acceso</div>
+                <div class="input-wrapper">
+                    <input type="password" id="access-key" placeholder="Access Key" autocomplete="off">
+                    <button class="toggle-pass" id="toggle-pass" type="button" tabindex="-1">
+                        <svg id="eye-open" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                        <svg id="eye-closed" viewBox="0 0 24 24" style="display:none"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+                    </button>
+                </div>
+                <button class="btn-login" id="btn-login">Ingresar</button>
             </div>
         </div>
 
@@ -261,12 +451,22 @@
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Elementos
+        // Elementos login
         const loginView = document.getElementById('login-view');
-        const appView = document.getElementById('app-view');
+        const loginCard = document.getElementById('login-card');
+        const loginIcon = document.getElementById('login-icon');
+        const loginSubtitle = document.getElementById('login-subtitle');
         const accessKeyInput = document.getElementById('access-key');
         const btnLogin = document.getElementById('btn-login');
-        const loginError = document.getElementById('login-error');
+        const togglePass = document.getElementById('toggle-pass');
+        const iconLock = document.getElementById('icon-lock');
+        const iconCheck = document.getElementById('icon-check');
+        const iconX = document.getElementById('icon-x');
+        const eyeOpen = document.getElementById('eye-open');
+        const eyeClosed = document.getElementById('eye-closed');
+
+        // Elementos app
+        const appView = document.getElementById('app-view');
         const btnLogout = document.getElementById('btn-logout');
         const inputUsuario = document.getElementById('input-usuario');
         const inputMonto = document.getElementById('input-monto');
@@ -275,6 +475,25 @@
         const formSuccess = document.getElementById('form-success');
         const recordsList = document.getElementById('records-list');
 
+        // Toggle password visibility
+        togglePass.addEventListener('click', () => {
+            const isPassword = accessKeyInput.type === 'password';
+            accessKeyInput.type = isPassword ? 'text' : 'password';
+            eyeOpen.style.display = isPassword ? 'none' : 'block';
+            eyeClosed.style.display = isPassword ? 'block' : 'none';
+        });
+
+        // Reset login state on typing
+        accessKeyInput.addEventListener('input', () => {
+            accessKeyInput.classList.remove('input-error', 'input-success');
+            loginIcon.classList.remove('error-icon', 'success-icon');
+            loginSubtitle.classList.remove('error-text', 'success-text');
+            loginSubtitle.textContent = 'Ingresa tu clave de acceso';
+            iconLock.style.display = 'block';
+            iconCheck.style.display = 'none';
+            iconX.style.display = 'none';
+        });
+
         // Login
         btnLogin.addEventListener('click', doLogin);
         accessKeyInput.addEventListener('keydown', (e) => {
@@ -282,21 +501,76 @@
         });
 
         function doLogin() {
-            loginError.style.display = 'none';
+            if (btnLogin.disabled) return;
+
             if (accessKeyInput.value === ACCESS_KEY) {
-                loginView.style.display = 'none';
-                appView.style.display = 'block';
-                loadRecords();
+                // Success
+                accessKeyInput.classList.remove('input-error');
+                accessKeyInput.classList.add('input-success');
+                loginIcon.classList.remove('error-icon');
+                loginIcon.classList.add('success-icon');
+                loginSubtitle.classList.remove('error-text');
+                loginSubtitle.classList.add('success-text');
+                loginSubtitle.textContent = 'Acceso autorizado';
+                iconLock.style.display = 'none';
+                iconX.style.display = 'none';
+                iconCheck.style.display = 'block';
+                loginCard.classList.add('success-glow');
+                btnLogin.disabled = true;
+
+                setTimeout(() => {
+                    loginCard.classList.add('exit');
+                }, 600);
+
+                setTimeout(() => {
+                    loginView.style.display = 'none';
+                    appView.style.display = 'block';
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            appView.classList.add('visible');
+                        });
+                    });
+                    loadRecords();
+                }, 1000);
             } else {
-                loginError.style.display = 'block';
+                // Error
+                accessKeyInput.classList.remove('input-success');
+                accessKeyInput.classList.add('input-error');
+                loginIcon.classList.remove('success-icon');
+                loginIcon.classList.add('error-icon');
+                loginSubtitle.classList.remove('success-text');
+                loginSubtitle.classList.add('error-text');
+                loginSubtitle.textContent = 'Clave incorrecta';
+                iconLock.style.display = 'none';
+                iconCheck.style.display = 'none';
+                iconX.style.display = 'block';
+                loginCard.classList.remove('shake');
+                void loginCard.offsetWidth;
+                loginCard.classList.add('shake');
+                accessKeyInput.select();
             }
         }
 
         // Logout
         btnLogout.addEventListener('click', () => {
-            appView.style.display = 'none';
-            loginView.style.display = 'block';
-            accessKeyInput.value = '';
+            appView.classList.remove('visible');
+            setTimeout(() => {
+                appView.style.display = 'none';
+                loginView.style.display = 'block';
+                loginCard.classList.remove('exit', 'success-glow');
+                loginIcon.classList.remove('success-icon', 'error-icon');
+                loginSubtitle.classList.remove('success-text', 'error-text');
+                loginSubtitle.textContent = 'Ingresa tu clave de acceso';
+                accessKeyInput.classList.remove('input-success', 'input-error');
+                accessKeyInput.value = '';
+                accessKeyInput.type = 'password';
+                eyeOpen.style.display = 'block';
+                eyeClosed.style.display = 'none';
+                iconLock.style.display = 'block';
+                iconCheck.style.display = 'none';
+                iconX.style.display = 'none';
+                btnLogin.disabled = false;
+            }, 400);
         });
 
         // Guardar registro
