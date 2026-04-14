@@ -452,8 +452,11 @@
         const ACCESS_KEY = 'Admin123';
         // ============================================================
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        lucide.createIcons();
+        let supabase;
+        try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+        catch(e) { console.error('Supabase init error:', e); }
+
+        try { lucide.createIcons(); } catch(e) { console.error('Lucide init error:', e); }
 
         const loginView = document.getElementById('login-view');
         const loginCard = document.getElementById('login-card');
