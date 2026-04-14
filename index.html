@@ -3,392 +3,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Cargas</title>
+    <title>Gestor de Bonos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-base: #06090D;
+            --bg-surface: #0B0F16;
+            --bg-card: #10161F;
+            --bg-card-hover: #141C27;
+            --bg-input: #0D1320;
+            --border-subtle: rgba(255,255,255,0.05);
+            --border-default: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.14);
+            --border-glow: rgba(0,230,160,0.18);
+            --accent: #00E6A0;
+            --accent-dim: rgba(0,230,160,0.12);
+            --accent-glow: 0 0 18px rgba(0,230,160,0.22);
+            --color-done: #EF4444;
+            --color-done-dim: rgba(239,68,68,0.12);
+            --text-primary: #EFF2F7;
+            --text-secondary: #5A6478;
+            --text-muted: #2E3646;
+            --font-ui: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 18px;
+            --shadow-card: 0 2px 16px rgba(0,0,0,0.5);
+            --t: 0.18s cubic-bezier(0.4,0,0.2,1);
         }
 
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
+            font-family: var(--font-ui);
+            background: var(--bg-base);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            background-image: radial-gradient(circle at 50% 40%, rgba(0,230,160,0.03) 0%, transparent 60%);
         }
 
-        .container {
-            width: 100%;
-            max-width: 520px;
-            padding: 20px;
-        }
+        ::selection { background: var(--accent-dim); color: var(--accent); }
 
-        /* ===== LOGIN ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 10px; }
+
+        [data-lucide] { width: 16px; height: 16px; stroke-width: 1.5; vertical-align: middle; flex-shrink: 0; }
+        .icon-md { width: 18px; height: 18px; }
+
+        .container { width: 100%; max-width: 500px; padding: 20px; }
+
+        /* ===== LOGIN CARD ===== */
         .login-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 14px;
-            padding: 40px 32px;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-default);
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.4s, box-shadow 0.4s;
         }
 
-        .login-card.shake {
-            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-        }
-
+        .login-card.shake { animation: shake 0.5s ease; }
         .login-card.success-glow {
-            border-color: #00c896;
-            box-shadow: 0 0 30px rgba(0, 200, 150, 0.15), 0 0 60px rgba(0, 200, 150, 0.05);
+            border-color: var(--border-glow);
+            box-shadow: var(--accent-glow), var(--shadow-card);
         }
+        .login-card.exit { animation: card-exit 0.4s ease forwards; }
 
-        .login-card.exit {
-            transform: scale(0.95) translateY(-20px);
-            opacity: 0;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 50%, 90% { transform: translateX(-6px); }
-            30%, 70% { transform: translateX(6px); }
-        }
-
-        .login-icon {
-            width: 48px;
-            height: 48px;
+        .login-logo {
+            width: 56px; height: 56px;
             margin: 0 auto 20px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #00c896 0%, #00a67a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, background 0.3s ease;
+            background: var(--accent-dim);
+            border-radius: var(--r-lg);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            animation: card-enter 0.5s ease both;
         }
-
-        .login-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: #0d1117;
-            transition: fill 0.3s ease;
-        }
-
-        .login-icon.error-icon {
-            background: linear-gradient(135deg, #f85149 0%, #da3633 100%);
-        }
-
-        .login-icon.success-icon {
-            background: linear-gradient(135deg, #00c896 0%, #00a67a 100%);
-            transform: scale(1.1);
-        }
+        .login-logo svg { fill: var(--accent); }
+        .login-logo.error-state { background: var(--color-done-dim); }
+        .login-logo.error-state svg { fill: var(--color-done); }
+        .login-logo.success-state { background: var(--accent-dim); transform: scale(1.08); }
 
         .login-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #e6edf3;
-            margin-bottom: 4px;
+            font-family: var(--font-mono);
+            font-size: 16px;
+            letter-spacing: 0.08em;
             text-align: center;
+            margin-bottom: 4px;
+            animation: card-enter 0.5s ease both;
+            animation-delay: 80ms;
         }
+        .login-title .bold { font-weight: 700; color: var(--text-primary); }
+        .login-title .light { font-weight: 400; color: var(--text-secondary); }
 
         .login-subtitle {
-            font-size: 0.85rem;
-            color: #484f58;
+            font-size: 13px;
+            color: var(--text-secondary);
             text-align: center;
             margin-bottom: 28px;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
+            animation: card-enter 0.5s ease both;
+            animation-delay: 140ms;
+        }
+        .login-subtitle.error-text { color: var(--color-done); }
+        .login-subtitle.success-text { color: var(--accent); }
+
+        .login-form {
+            animation: card-enter 0.5s ease both;
+            animation-delay: 200ms;
         }
 
-        .login-subtitle.error-text {
-            color: #f85149;
-        }
-
-        .login-subtitle.success-text {
-            color: #00c896;
-        }
-
-        .input-wrapper {
+        .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
-
-        .input-wrapper input {
+        .input-group .field-icon {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted); pointer-events: none;
+        }
+        .input-group input {
             width: 100%;
-            padding: 14px 46px 14px 16px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            color: #e6edf3;
-            font-size: 0.95rem;
+            padding: 13px 46px 13px 42px;
+            background: var(--bg-input);
+            border: 0.5px solid var(--border-default);
+            border-radius: var(--r-md);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            font-size: 14px;
             outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color var(--t), box-shadow var(--t);
         }
-
-        .input-wrapper input:focus {
-            border-color: #00c896;
-            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.1);
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
         }
-
-        .input-wrapper input.input-error {
-            border-color: #f85149;
-            box-shadow: 0 0 0 3px rgba(248, 81, 73, 0.1);
+        .input-group input::placeholder { color: var(--text-muted); }
+        .input-group input.input-error {
+            border-color: var(--color-done);
+            box-shadow: 0 0 0 3px var(--color-done-dim);
         }
-
-        .input-wrapper input.input-success {
-            border-color: #00c896;
-            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.15);
+        .input-group input.input-success {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim);
         }
-
-        .input-wrapper input::placeholder {
-            color: #484f58;
-        }
-
         .toggle-pass {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none !important;
-            border: none !important;
-            cursor: pointer;
-            padding: 4px;
-            width: auto !important;
-            display: flex;
-            align-items: center;
-            border-radius: 4px;
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; padding: 4px;
+            color: var(--text-muted); display: flex; align-items: center;
+            transition: color var(--t);
         }
-
-        .toggle-pass:hover {
-            background: none !important;
-        }
-
-        .toggle-pass svg {
-            width: 18px;
-            height: 18px;
-            fill: #484f58;
-            transition: fill 0.2s;
-        }
-
-        .toggle-pass:hover svg {
-            fill: #8b949e;
-        }
+        .toggle-pass:hover { color: var(--text-secondary); }
 
         .btn-login {
             width: 100%;
-            padding: 12px 14px;
-            background-color: #00c896;
-            color: #0d1117;
+            padding: 13px;
+            background: var(--accent);
+            color: var(--bg-base);
             border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: var(--r-md);
+            font-family: var(--font-ui);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.15s;
-            position: relative;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all var(--t);
         }
+        .btn-login:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-login:active { transform: translateY(0); }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        .btn-login:hover {
-            background-color: #00b383;
-            transform: translateY(-1px);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
-        }
-
-        .btn-login:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .login-footer {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 24px;
+            animation: card-enter 0.5s ease both;
+            animation-delay: 260ms;
         }
 
         /* ===== APP ===== */
-        .card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 14px;
-            padding: 32px;
-        }
-
         #app-view {
             display: none;
             opacity: 0;
-            transform: scale(0.95) translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
         }
-
         #app-view.visible {
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4,0,0.2,1);
         }
 
-        h1 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #e6edf3;
+        .app-card {
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-default);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 24px;
-            text-align: center;
         }
-
-        h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #e6edf3;
-            margin-bottom: 16px;
+        .app-title {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            letter-spacing: 0.08em;
         }
+        .app-title .bold { font-weight: 700; }
+        .app-title .light { font-weight: 400; color: var(--text-secondary); }
 
-        label {
+        .btn-logout {
+            background: none;
+            border: 0.5px solid var(--border-default);
+            border-radius: var(--r-sm);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            font-family: var(--font-ui);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: all var(--t);
+        }
+        .btn-logout:hover { color: var(--color-done); border-color: var(--color-done); }
+
+        .field { margin-bottom: 16px; }
+        .field label {
             display: block;
-            font-size: 0.85rem;
-            color: #8b949e;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
             margin-bottom: 6px;
         }
-
-        input {
+        .field input {
             width: 100%;
             padding: 10px 14px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #e6edf3;
-            font-size: 0.95rem;
+            background: var(--bg-input);
+            border: 0.5px solid var(--border-default);
+            border-radius: var(--r-sm);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            font-size: 13px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color var(--t), box-shadow var(--t);
         }
+        .field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+        .field input::placeholder { color: var(--text-muted); }
 
-        input:focus {
-            border-color: #00c896;
-        }
-
-        input::placeholder {
-            color: #484f58;
-        }
-
-        .field {
-            margin-bottom: 16px;
-        }
-
-        .btn-action {
+        .btn-save {
             width: 100%;
-            padding: 10px 14px;
-            background-color: #00c896;
-            color: #0d1117;
+            padding: 11px;
+            background: var(--accent);
+            color: var(--bg-base);
             border: none;
-            border-radius: 6px;
-            font-size: 0.95rem;
+            border-radius: var(--r-sm);
+            font-family: var(--font-ui);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all var(--t);
         }
+        .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-save:active { transform: translateY(0); }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .btn-action:hover {
-            background-color: #00b383;
-        }
-
-        .btn-action:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .error-msg {
-            color: #f85149;
-            font-size: 0.85rem;
-            margin-top: 12px;
+        .feedback {
+            font-size: 13px;
             text-align: center;
-            display: none;
-        }
-
-        .success-msg {
-            color: #00c896;
-            font-size: 0.85rem;
             margin-top: 12px;
-            text-align: center;
+            padding: 8px;
+            border-radius: var(--r-sm);
             display: none;
+            animation: slide-up 0.2s ease;
         }
+        .feedback.error { color: var(--color-done); background: var(--color-done-dim); display: block; }
+        .feedback.success { color: var(--accent); background: var(--accent-dim); display: block; }
 
         .divider {
             border: none;
-            border-top: 1px solid #30363d;
+            border-top: 0.5px solid var(--border-subtle);
             margin: 24px 0;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 12px;
         }
 
         .records-list {
             list-style: none;
-            max-height: 320px;
+            max-height: 340px;
             overflow-y: auto;
-        }
-
-        .records-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .records-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .records-list::-webkit-scrollbar-thumb {
-            background-color: #30363d;
-            border-radius: 3px;
         }
 
         .record-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 14px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--r-md);
+            margin-bottom: 6px;
+            transition: all var(--t);
         }
-
+        .record-item:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
         .record-user {
-            color: #e6edf3;
+            font-size: 13.5px;
             font-weight: 500;
+            color: var(--text-primary);
         }
-
         .record-amount {
-            color: #00c896;
+            font-family: var(--font-mono);
+            font-size: 14px;
             font-weight: 600;
+            color: var(--accent);
         }
 
         .empty-state {
             text-align: center;
-            color: #484f58;
-            font-size: 0.9rem;
-            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: 28px 0;
         }
 
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+        @keyframes card-enter {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .header-bar h1 {
-            margin-bottom: 0;
-            text-align: left;
+        @keyframes card-exit {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-30px); }
         }
-
-        .btn-logout {
-            width: auto;
-            padding: 6px 14px;
-            background-color: transparent;
-            color: #8b949e;
-            border: 1px solid #30363d;
-            font-size: 0.8rem;
-            font-weight: 500;
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            10%,50%,90% { transform: translateX(-5px); }
+            30%,70% { transform: translateX(5px); }
         }
-
-        .btn-logout:hover {
-            color: #f85149;
-            border-color: #f85149;
-            background-color: transparent;
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin { animation: spin 1s linear infinite; }
     </style>
 </head>
 <body>
@@ -396,47 +372,69 @@
         <!-- LOGIN -->
         <div id="login-view">
             <div class="login-card" id="login-card">
-                <div class="login-icon" id="login-icon">
-                    <svg id="icon-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg>
-                    <svg id="icon-check" viewBox="0 0 24 24" style="display:none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    <svg id="icon-x" viewBox="0 0 24 24" style="display:none"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                <div class="login-logo" id="login-logo">
+                    <svg width="24" height="24" viewBox="0 0 32 32">
+                        <rect x="0" y="0" width="14" height="8" rx="2" opacity="0.9"/>
+                        <rect x="18" y="0" width="14" height="8" rx="2" opacity="0.5"/>
+                        <rect x="0" y="12" width="14" height="8" rx="2" opacity="0.6"/>
+                        <rect x="18" y="12" width="14" height="8" rx="2" opacity="0.9"/>
+                        <rect x="0" y="24" width="14" height="8" rx="2" opacity="0.4"/>
+                        <rect x="18" y="24" width="14" height="8" rx="2" opacity="0.7"/>
+                    </svg>
                 </div>
-                <div class="login-title">Panel de Cargas</div>
+                <div class="login-title">
+                    <span class="bold">GESTOR</span> <span class="light">BONOS</span>
+                </div>
                 <div class="login-subtitle" id="login-subtitle">Ingresa tu clave de acceso</div>
-                <div class="input-wrapper">
-                    <input type="password" id="access-key" placeholder="Access Key" autocomplete="off">
-                    <button class="toggle-pass" id="toggle-pass" type="button" tabindex="-1">
-                        <svg id="eye-open" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                        <svg id="eye-closed" viewBox="0 0 24 24" style="display:none"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+
+                <div class="login-form">
+                    <div class="input-group">
+                        <i data-lucide="lock" class="field-icon"></i>
+                        <input type="password" id="access-key" placeholder="Access Key" autocomplete="off">
+                        <button class="toggle-pass" id="toggle-pass" type="button" tabindex="-1">
+                            <i data-lucide="eye" id="eye-icon"></i>
+                        </button>
+                    </div>
+                    <button class="btn-login" id="btn-login">
+                        <i data-lucide="log-in" class="icon-md"></i>
+                        <span id="btn-login-text">Ingresar</span>
                     </button>
                 </div>
-                <button class="btn-login" id="btn-login">Ingresar</button>
+
+                <div class="login-footer">Gestor Bonos v1.0</div>
             </div>
         </div>
 
         <!-- APP -->
         <div id="app-view">
-            <div class="card">
-                <div class="header-bar">
-                    <h1>Panel de Cargas</h1>
-                    <button class="btn-logout" id="btn-logout">Salir</button>
+            <div class="app-card">
+                <div class="app-header">
+                    <div class="app-title">
+                        <span class="bold">GESTOR</span> <span class="light">BONOS</span>
+                    </div>
+                    <button class="btn-logout" id="btn-logout">
+                        <i data-lucide="log-out"></i>
+                        Salir
+                    </button>
                 </div>
 
                 <div class="field">
-                    <label for="input-usuario">Usuario</label>
+                    <label>Usuario</label>
                     <input type="text" id="input-usuario" placeholder="Nombre del usuario">
                 </div>
                 <div class="field">
-                    <label for="input-monto">Monto</label>
+                    <label>Monto</label>
                     <input type="number" id="input-monto" placeholder="0.00" step="0.01">
                 </div>
-                <button class="btn-action" id="btn-guardar">Guardar</button>
-                <div class="error-msg" id="form-error"></div>
-                <div class="success-msg" id="form-success">Registro guardado</div>
+                <button class="btn-save" id="btn-guardar">
+                    <i data-lucide="save"></i>
+                    Guardar
+                </button>
+                <div class="feedback" id="form-feedback"></div>
 
                 <hr class="divider">
 
-                <h2>Ultimos registros</h2>
+                <div class="section-title">Ultimos registros</div>
                 <ul class="records-list" id="records-list">
                     <li class="empty-state">Cargando...</li>
                 </ul>
@@ -447,7 +445,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // ============================================================
-        // CONFIGURACION - Editar estos valores
+        // CONFIGURACION
         // ============================================================
         const SUPABASE_URL = 'https://ybapmcjydxuzihtfbpuc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_rPYIGBIToZwhkuKHpVxgJw_eTjOjhHH';
@@ -455,100 +453,78 @@
         // ============================================================
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        lucide.createIcons();
 
-        // Elementos login
         const loginView = document.getElementById('login-view');
         const loginCard = document.getElementById('login-card');
-        const loginIcon = document.getElementById('login-icon');
+        const loginLogo = document.getElementById('login-logo');
         const loginSubtitle = document.getElementById('login-subtitle');
         const accessKeyInput = document.getElementById('access-key');
         const btnLogin = document.getElementById('btn-login');
+        const btnLoginText = document.getElementById('btn-login-text');
         const togglePass = document.getElementById('toggle-pass');
-        const iconLock = document.getElementById('icon-lock');
-        const iconCheck = document.getElementById('icon-check');
-        const iconX = document.getElementById('icon-x');
-        const eyeOpen = document.getElementById('eye-open');
-        const eyeClosed = document.getElementById('eye-closed');
-
-        // Elementos app
+        const eyeIcon = document.getElementById('eye-icon');
         const appView = document.getElementById('app-view');
         const btnLogout = document.getElementById('btn-logout');
         const inputUsuario = document.getElementById('input-usuario');
         const inputMonto = document.getElementById('input-monto');
         const btnGuardar = document.getElementById('btn-guardar');
-        const formError = document.getElementById('form-error');
-        const formSuccess = document.getElementById('form-success');
+        const formFeedback = document.getElementById('form-feedback');
         const recordsList = document.getElementById('records-list');
 
         // Toggle password visibility
         togglePass.addEventListener('click', () => {
-            const isPassword = accessKeyInput.type === 'password';
-            accessKeyInput.type = isPassword ? 'text' : 'password';
-            eyeOpen.style.display = isPassword ? 'none' : 'block';
-            eyeClosed.style.display = isPassword ? 'block' : 'none';
+            const isPass = accessKeyInput.type === 'password';
+            accessKeyInput.type = isPass ? 'text' : 'password';
+            eyeIcon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye');
+            lucide.createIcons();
         });
 
-        // Reset login state on typing
+        // Reset on typing
         accessKeyInput.addEventListener('input', () => {
             accessKeyInput.classList.remove('input-error', 'input-success');
-            loginIcon.classList.remove('error-icon', 'success-icon');
+            loginLogo.classList.remove('error-state', 'success-state');
             loginSubtitle.classList.remove('error-text', 'success-text');
             loginSubtitle.textContent = 'Ingresa tu clave de acceso';
-            iconLock.style.display = 'block';
-            iconCheck.style.display = 'none';
-            iconX.style.display = 'none';
         });
 
         // Login
         btnLogin.addEventListener('click', doLogin);
-        accessKeyInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') doLogin();
-        });
+        accessKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
         function doLogin() {
             if (btnLogin.disabled) return;
 
             if (accessKeyInput.value === ACCESS_KEY) {
-                // Success
                 accessKeyInput.classList.remove('input-error');
                 accessKeyInput.classList.add('input-success');
-                loginIcon.classList.remove('error-icon');
-                loginIcon.classList.add('success-icon');
+                loginLogo.classList.remove('error-state');
+                loginLogo.classList.add('success-state');
                 loginSubtitle.classList.remove('error-text');
                 loginSubtitle.classList.add('success-text');
                 loginSubtitle.textContent = 'Acceso autorizado';
-                iconLock.style.display = 'none';
-                iconX.style.display = 'none';
-                iconCheck.style.display = 'block';
-                loginCard.classList.add('success-glow');
                 btnLogin.disabled = true;
+                btnLoginText.textContent = 'Acceso autorizado';
+                btnLogin.querySelector('[data-lucide]').setAttribute('data-lucide', 'check');
+                lucide.createIcons();
+                loginCard.classList.add('success-glow');
 
-                setTimeout(() => {
-                    loginCard.classList.add('exit');
-                }, 600);
-
+                setTimeout(() => loginCard.classList.add('exit'), 600);
                 setTimeout(() => {
                     loginView.style.display = 'none';
                     appView.style.display = 'block';
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            appView.classList.add('visible');
-                        });
-                    });
+                    requestAnimationFrame(() => requestAnimationFrame(() => appView.classList.add('visible')));
+                    lucide.createIcons();
                     loadRecords();
                 }, 1000);
             } else {
-                // Error
                 accessKeyInput.classList.remove('input-success');
                 accessKeyInput.classList.add('input-error');
-                loginIcon.classList.remove('success-icon');
-                loginIcon.classList.add('error-icon');
+                loginLogo.classList.remove('success-state');
+                loginLogo.classList.add('error-state');
                 loginSubtitle.classList.remove('success-text');
                 loginSubtitle.classList.add('error-text');
                 loginSubtitle.textContent = 'Clave incorrecta';
-                iconLock.style.display = 'none';
-                iconCheck.style.display = 'none';
-                iconX.style.display = 'block';
                 loginCard.classList.remove('shake');
                 void loginCard.offsetWidth;
                 loginCard.classList.add('shake');
@@ -563,37 +539,37 @@
                 appView.style.display = 'none';
                 loginView.style.display = 'block';
                 loginCard.classList.remove('exit', 'success-glow');
-                loginIcon.classList.remove('success-icon', 'error-icon');
+                loginLogo.classList.remove('success-state', 'error-state');
                 loginSubtitle.classList.remove('success-text', 'error-text');
                 loginSubtitle.textContent = 'Ingresa tu clave de acceso';
                 accessKeyInput.classList.remove('input-success', 'input-error');
                 accessKeyInput.value = '';
                 accessKeyInput.type = 'password';
-                eyeOpen.style.display = 'block';
-                eyeClosed.style.display = 'none';
-                iconLock.style.display = 'block';
-                iconCheck.style.display = 'none';
-                iconX.style.display = 'none';
+                eyeIcon.setAttribute('data-lucide', 'eye');
                 btnLogin.disabled = false;
-            }, 400);
+                btnLoginText.textContent = 'Ingresar';
+                btnLogin.querySelector('[data-lucide]').setAttribute('data-lucide', 'log-in');
+                lucide.createIcons();
+            }, 300);
         });
 
-        // Guardar registro
+        // Save
         btnGuardar.addEventListener('click', saveRecord);
-        inputMonto.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') saveRecord();
-        });
+        inputMonto.addEventListener('keydown', e => { if (e.key === 'Enter') saveRecord(); });
+
+        function showFeedback(msg, type) {
+            formFeedback.textContent = msg;
+            formFeedback.className = 'feedback ' + type;
+            if (type === 'success') setTimeout(() => { formFeedback.className = 'feedback'; }, 2500);
+        }
 
         async function saveRecord() {
-            formError.style.display = 'none';
-            formSuccess.style.display = 'none';
-
+            formFeedback.className = 'feedback';
             const usuario = inputUsuario.value.trim();
             const monto = parseFloat(inputMonto.value);
 
             if (!usuario || isNaN(monto)) {
-                formError.textContent = 'Completa ambos campos correctamente';
-                formError.style.display = 'block';
+                showFeedback('Completa ambos campos correctamente', 'error');
                 return;
             }
 
@@ -602,20 +578,18 @@
             btnGuardar.disabled = false;
 
             if (error) {
-                formError.textContent = 'Error al guardar: ' + error.message;
-                formError.style.display = 'block';
+                showFeedback('Error: ' + error.message, 'error');
                 return;
             }
 
-            formSuccess.style.display = 'block';
+            showFeedback('Registro guardado', 'success');
             inputUsuario.value = '';
             inputMonto.value = '';
             inputUsuario.focus();
-            setTimeout(() => { formSuccess.style.display = 'none'; }, 2000);
             loadRecords();
         }
 
-        // Cargar registros
+        // Load records
         async function loadRecords() {
             const { data, error } = await supabase
                 .from('cargas')
@@ -627,24 +601,22 @@
                 recordsList.innerHTML = '<li class="empty-state">Error al cargar registros</li>';
                 return;
             }
-
             if (!data || data.length === 0) {
                 recordsList.innerHTML = '<li class="empty-state">Sin registros</li>';
                 return;
             }
-
-            recordsList.innerHTML = data.map(r =>
-                `<li class="record-item">
-                    <span class="record-user">${escapeHtml(r.usuario)}</span>
+            recordsList.innerHTML = data.map(r => `
+                <li class="record-item">
+                    <span class="record-user">${escHtml(r.usuario)}</span>
                     <span class="record-amount">$${Number(r.monto).toLocaleString('es-AR', { minimumFractionDigits: 2 })}</span>
-                </li>`
-            ).join('');
+                </li>
+            `).join('');
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        function escHtml(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
         }
     </script>
 </body>
