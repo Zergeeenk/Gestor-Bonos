@@ -6,7 +6,6 @@
     <title>Gestor de Bonos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
             --bg-base: #06090D;
@@ -28,7 +27,7 @@
             --text-muted: #2E3646;
             --font-ui: 'DM Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 18px;
+            --r-sm: 6px; --r-md: 10px; --r-lg: 14px;
             --shadow-card: 0 2px 16px rgba(0,0,0,0.5);
             --t: 0.18s cubic-bezier(0.4,0,0.2,1);
         }
@@ -47,156 +46,11 @@
         }
 
         ::selection { background: var(--accent-dim); color: var(--accent); }
-
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 10px; }
 
-        [data-lucide] { width: 16px; height: 16px; stroke-width: 1.5; vertical-align: middle; flex-shrink: 0; }
-        .icon-md { width: 18px; height: 18px; }
-
         .container { width: 100%; max-width: 500px; padding: 20px; }
-
-        /* ===== LOGIN CARD ===== */
-        .login-card {
-            background: var(--bg-card);
-            border: 0.5px solid var(--border-default);
-            border-radius: 20px;
-            padding: 40px 36px;
-            box-shadow: var(--shadow-card);
-            transition: border-color 0.4s, box-shadow 0.4s;
-        }
-
-        .login-card.shake { animation: shake 0.5s ease; }
-        .login-card.success-glow {
-            border-color: var(--border-glow);
-            box-shadow: var(--accent-glow), var(--shadow-card);
-        }
-        .login-card.exit { animation: card-exit 0.4s ease forwards; }
-
-        .login-logo {
-            width: 56px; height: 56px;
-            margin: 0 auto 20px;
-            background: var(--accent-dim);
-            border-radius: var(--r-lg);
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease;
-            animation: card-enter 0.5s ease both;
-        }
-        .login-logo svg { fill: var(--accent); }
-        .login-logo.error-state { background: var(--color-done-dim); }
-        .login-logo.error-state svg { fill: var(--color-done); }
-        .login-logo.success-state { background: var(--accent-dim); transform: scale(1.08); }
-
-        .login-title {
-            font-family: var(--font-mono);
-            font-size: 16px;
-            letter-spacing: 0.08em;
-            text-align: center;
-            margin-bottom: 4px;
-            animation: card-enter 0.5s ease both;
-            animation-delay: 80ms;
-        }
-        .login-title .bold { font-weight: 700; color: var(--text-primary); }
-        .login-title .light { font-weight: 400; color: var(--text-secondary); }
-
-        .login-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 28px;
-            transition: color 0.3s;
-            animation: card-enter 0.5s ease both;
-            animation-delay: 140ms;
-        }
-        .login-subtitle.error-text { color: var(--color-done); }
-        .login-subtitle.success-text { color: var(--accent); }
-
-        .login-form {
-            animation: card-enter 0.5s ease both;
-            animation-delay: 200ms;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 16px;
-        }
-        .input-group .field-icon {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            color: var(--text-muted); pointer-events: none;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 13px 46px 13px 42px;
-            background: var(--bg-input);
-            border: 0.5px solid var(--border-default);
-            border-radius: var(--r-md);
-            color: var(--text-primary);
-            font-family: var(--font-ui);
-            font-size: 14px;
-            outline: none;
-            transition: border-color var(--t), box-shadow var(--t);
-        }
-        .input-group input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-        .input-group input::placeholder { color: var(--text-muted); }
-        .input-group input.input-error {
-            border-color: var(--color-done);
-            box-shadow: 0 0 0 3px var(--color-done-dim);
-        }
-        .input-group input.input-success {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-dim);
-        }
-        .toggle-pass {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; cursor: pointer; padding: 4px;
-            color: var(--text-muted); display: flex; align-items: center;
-            transition: color var(--t);
-        }
-        .toggle-pass:hover { color: var(--text-secondary); }
-
-        .btn-login {
-            width: 100%;
-            padding: 13px;
-            background: var(--accent);
-            color: var(--bg-base);
-            border: none;
-            border-radius: var(--r-md);
-            font-family: var(--font-ui);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: all var(--t);
-        }
-        .btn-login:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .btn-login:active { transform: translateY(0); }
-        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-        .login-footer {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 24px;
-            animation: card-enter 0.5s ease both;
-            animation-delay: 260ms;
-        }
-
-        /* ===== APP ===== */
-        #app-view {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        #app-view.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4,0,0.2,1);
-        }
 
         .app-card {
             background: var(--bg-card);
@@ -219,21 +73,6 @@
         }
         .app-title .bold { font-weight: 700; }
         .app-title .light { font-weight: 400; color: var(--text-secondary); }
-
-        .btn-logout {
-            background: none;
-            border: 0.5px solid var(--border-default);
-            border-radius: var(--r-sm);
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            font-family: var(--font-ui);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex; align-items: center; gap: 6px;
-            transition: all var(--t);
-        }
-        .btn-logout:hover { color: var(--color-done); border-color: var(--color-done); }
 
         .field { margin-bottom: 16px; }
         .field label {
@@ -269,7 +108,6 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
             transition: all var(--t);
         }
         .btn-save:hover { filter: brightness(1.1); transform: translateY(-1px); }
@@ -283,7 +121,6 @@
             padding: 8px;
             border-radius: var(--r-sm);
             display: none;
-            animation: slide-up 0.2s ease;
         }
         .feedback.error { color: var(--color-done); background: var(--color-done-dim); display: block; }
         .feedback.success { color: var(--accent); background: var(--accent-dim); display: block; }
@@ -342,262 +179,54 @@
             font-size: 13px;
             padding: 28px 0;
         }
-
-        @keyframes card-enter {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes card-exit {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-30px); }
-        }
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            10%,50%,90% { transform: translateX(-5px); }
-            30%,70% { transform: translateX(5px); }
-        }
-        @keyframes slide-up {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .spin { animation: spin 1s linear infinite; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- LOGIN -->
-        <div id="login-view">
-            <div class="login-card" id="login-card">
-                <div class="login-logo" id="login-logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32">
-                        <rect x="0" y="0" width="14" height="8" rx="2" opacity="0.9"/>
-                        <rect x="18" y="0" width="14" height="8" rx="2" opacity="0.5"/>
-                        <rect x="0" y="12" width="14" height="8" rx="2" opacity="0.6"/>
-                        <rect x="18" y="12" width="14" height="8" rx="2" opacity="0.9"/>
-                        <rect x="0" y="24" width="14" height="8" rx="2" opacity="0.4"/>
-                        <rect x="18" y="24" width="14" height="8" rx="2" opacity="0.7"/>
-                    </svg>
-                </div>
-                <div class="login-title">
+        <div class="app-card">
+            <div class="app-header">
+                <div class="app-title">
                     <span class="bold">GESTOR</span> <span class="light">BONOS</span>
                 </div>
-                <div class="login-subtitle" id="login-subtitle">Ingresa tu clave de acceso</div>
-
-                <div class="login-form">
-                    <div class="input-group">
-                        <i data-lucide="lock" class="field-icon"></i>
-                        <input type="password" id="access-key" placeholder="Access Key" autocomplete="off">
-                        <button class="toggle-pass" id="toggle-pass" type="button" tabindex="-1">
-                            <i data-lucide="eye" id="eye-icon"></i>
-                        </button>
-                    </div>
-                    <button class="btn-login" id="btn-login">
-                        <i data-lucide="log-in" class="icon-md"></i>
-                        <span id="btn-login-text">Ingresar</span>
-                    </button>
-                </div>
-
-                <div class="login-footer">Gestor Bonos v1.0</div>
             </div>
-        </div>
 
-        <!-- APP -->
-        <div id="app-view">
-            <div class="app-card">
-                <div class="app-header">
-                    <div class="app-title">
-                        <span class="bold">GESTOR</span> <span class="light">BONOS</span>
-                    </div>
-                    <button class="btn-logout" id="btn-logout">
-                        <i data-lucide="log-out"></i>
-                        Salir
-                    </button>
-                </div>
-
-                <div class="field">
-                    <label>Usuario</label>
-                    <input type="text" id="input-usuario" placeholder="Nombre del usuario">
-                </div>
-                <div class="field">
-                    <label>Monto</label>
-                    <input type="number" id="input-monto" placeholder="0.00" step="0.01">
-                </div>
-                <button class="btn-save" id="btn-guardar">
-                    <i data-lucide="save"></i>
-                    Guardar
-                </button>
-                <div class="feedback" id="form-feedback"></div>
-
-                <hr class="divider">
-
-                <div class="section-title">Ultimos registros</div>
-                <ul class="records-list" id="records-list">
-                    <li class="empty-state">Cargando...</li>
-                </ul>
+            <div class="field">
+                <label>Usuario</label>
+                <input type="text" id="input-usuario" placeholder="Nombre del usuario">
             </div>
+            <div class="field">
+                <label>Monto</label>
+                <input type="number" id="input-monto" placeholder="0.00" step="0.01">
+            </div>
+            <button class="btn-save" id="btn-guardar">Guardar</button>
+            <div class="feedback" id="form-feedback"></div>
+
+            <hr class="divider">
+
+            <div class="section-title">Ultimos registros</div>
+            <ul class="records-list" id="records-list">
+                <li class="empty-state">Cargando...</li>
+            </ul>
         </div>
     </div>
 
-    <!-- DEBUG LOG -->
-    <div id="debug-log" style="position:fixed;bottom:0;left:0;right:0;max-height:180px;overflow-y:auto;background:#000;color:#0f0;font-family:monospace;font-size:11px;padding:8px;z-index:9999;border-top:1px solid #333;"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ============================================================
-        // DEBUG
-        // ============================================================
-        function log(msg) {
-            var el = document.getElementById('debug-log');
-            if (el) {
-                var t = new Date().toTimeString().slice(0,8);
-                el.innerHTML += '<div>[' + t + '] ' + msg + '</div>';
-                el.scrollTop = el.scrollHeight;
-            }
-            console.log('[DEBUG]', msg);
-        }
-        window.onerror = function(msg, src, line, col, err) {
-            log('ERROR: ' + msg + ' (line ' + line + ')');
-        };
-
-        log('Script start');
-        log('Lucide loaded: ' + (typeof lucide !== 'undefined'));
-        log('Supabase loaded: ' + (typeof window.supabase !== 'undefined'));
-
         // ============================================================
         // CONFIGURACION
         // ============================================================
         const SUPABASE_URL = 'https://ybapmcjydxuzihtfbpuc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_rPYIGBIToZwhkuKHpVxgJw_eTjOjhHH';
-        const ACCESS_KEY = 'Admin123';
         // ============================================================
 
-        let supabase;
-        try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            log('Supabase client: OK');
-        } catch(e) { log('Supabase client FAILED: ' + e.message); }
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        try { lucide.createIcons(); log('Lucide icons: OK'); }
-        catch(e) { log('Lucide icons FAILED: ' + e.message); }
-
-        const loginView = document.getElementById('login-view');
-        const loginCard = document.getElementById('login-card');
-        const loginLogo = document.getElementById('login-logo');
-        const loginSubtitle = document.getElementById('login-subtitle');
-        const accessKeyInput = document.getElementById('access-key');
-        const btnLogin = document.getElementById('btn-login');
-        const btnLoginText = document.getElementById('btn-login-text');
-        const togglePass = document.getElementById('toggle-pass');
-        const eyeIcon = document.getElementById('eye-icon');
-        const appView = document.getElementById('app-view');
-        const btnLogout = document.getElementById('btn-logout');
         const inputUsuario = document.getElementById('input-usuario');
         const inputMonto = document.getElementById('input-monto');
         const btnGuardar = document.getElementById('btn-guardar');
         const formFeedback = document.getElementById('form-feedback');
         const recordsList = document.getElementById('records-list');
 
-        log('Elements found - loginView:' + !!loginView + ' loginCard:' + !!loginCard + ' accessKeyInput:' + !!accessKeyInput + ' btnLogin:' + !!btnLogin + ' appView:' + !!appView);
-
-        // Toggle password visibility
-        togglePass.addEventListener('click', () => {
-            const isPass = accessKeyInput.type === 'password';
-            accessKeyInput.type = isPass ? 'text' : 'password';
-            try { eyeIcon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye'); reloadIcons(); } catch(e) {}
-        });
-
-        // Reset on typing
-        accessKeyInput.addEventListener('input', () => {
-            accessKeyInput.classList.remove('input-error', 'input-success');
-            loginLogo.classList.remove('error-state', 'success-state');
-            loginSubtitle.classList.remove('error-text', 'success-text');
-            loginSubtitle.textContent = 'Ingresa tu clave de acceso';
-        });
-
-        // Login
-        log('Attaching click listener to btnLogin');
-        btnLogin.addEventListener('click', function() { log('btnLogin CLICKED'); doLogin(); });
-        accessKeyInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { log('ENTER pressed'); doLogin(); } });
-
-        function reloadIcons() {
-            try { lucide.createIcons(); } catch(e) {}
-        }
-
-        function doLogin() {
-            log('doLogin called - disabled:' + btnLogin.disabled + ' value:"' + accessKeyInput.value + '" expected:"' + ACCESS_KEY + '" match:' + (accessKeyInput.value === ACCESS_KEY));
-            if (btnLogin.disabled) return;
-
-            if (accessKeyInput.value === ACCESS_KEY) {
-                log('LOGIN SUCCESS - starting transition');
-                // Success feedback
-                accessKeyInput.classList.remove('input-error');
-                accessKeyInput.classList.add('input-success');
-                loginLogo.classList.remove('error-state');
-                loginLogo.classList.add('success-state');
-                loginSubtitle.classList.remove('error-text');
-                loginSubtitle.classList.add('success-text');
-                loginSubtitle.textContent = 'Acceso autorizado';
-                btnLogin.disabled = true;
-                btnLoginText.textContent = 'Acceso autorizado';
-                try {
-                    const ico = btnLogin.querySelector('[data-lucide]');
-                    if (ico) { ico.setAttribute('data-lucide', 'check'); reloadIcons(); }
-                } catch(e) {}
-                loginCard.classList.add('success-glow');
-
-                // Transition to app
-                setTimeout(function() { loginCard.classList.add('exit'); }, 600);
-                setTimeout(function() {
-                    loginView.style.display = 'none';
-                    appView.style.display = 'block';
-                    // Force reflow then animate in
-                    void appView.offsetWidth;
-                    appView.classList.add('visible');
-                    reloadIcons();
-                    loadRecords();
-                }, 1000);
-            } else {
-                log('LOGIN FAILED - wrong key');
-                accessKeyInput.classList.remove('input-success');
-                accessKeyInput.classList.add('input-error');
-                loginLogo.classList.remove('success-state');
-                loginLogo.classList.add('error-state');
-                loginSubtitle.classList.remove('success-text');
-                loginSubtitle.classList.add('error-text');
-                loginSubtitle.textContent = 'Clave incorrecta';
-                loginCard.classList.remove('shake');
-                void loginCard.offsetWidth;
-                loginCard.classList.add('shake');
-                accessKeyInput.select();
-            }
-        }
-
-        // Logout
-        btnLogout.addEventListener('click', () => {
-            appView.classList.remove('visible');
-            setTimeout(() => {
-                appView.style.display = 'none';
-                loginView.style.display = 'block';
-                loginCard.classList.remove('exit', 'success-glow');
-                loginLogo.classList.remove('success-state', 'error-state');
-                loginSubtitle.classList.remove('success-text', 'error-text');
-                loginSubtitle.textContent = 'Ingresa tu clave de acceso';
-                accessKeyInput.classList.remove('input-success', 'input-error');
-                accessKeyInput.value = '';
-                accessKeyInput.type = 'password';
-                try { eyeIcon.setAttribute('data-lucide', 'eye'); } catch(e) {}
-                btnLogin.disabled = false;
-                btnLoginText.textContent = 'Ingresar';
-                try { var ico = btnLogin.querySelector('[data-lucide]'); if(ico) ico.setAttribute('data-lucide', 'log-in'); } catch(e) {}
-                reloadIcons();
-            }, 300);
-        });
-
-        // Save
         btnGuardar.addEventListener('click', saveRecord);
         inputMonto.addEventListener('keydown', e => { if (e.key === 'Enter') saveRecord(); });
 
@@ -633,7 +262,6 @@
             loadRecords();
         }
 
-        // Load records
         async function loadRecords() {
             const { data, error } = await supabase
                 .from('cargas')
@@ -662,6 +290,8 @@
             d.textContent = t;
             return d.innerHTML;
         }
+
+        loadRecords();
     </script>
 </body>
 </html>
