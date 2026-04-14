@@ -479,8 +479,7 @@
         togglePass.addEventListener('click', () => {
             const isPass = accessKeyInput.type === 'password';
             accessKeyInput.type = isPass ? 'text' : 'password';
-            eyeIcon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye');
-            lucide.createIcons();
+            try { eyeIcon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye'); reloadIcons(); } catch(e) {}
         });
 
         // Reset on typing
@@ -495,10 +494,15 @@
         btnLogin.addEventListener('click', doLogin);
         accessKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
+        function reloadIcons() {
+            try { lucide.createIcons(); } catch(e) {}
+        }
+
         function doLogin() {
             if (btnLogin.disabled) return;
 
             if (accessKeyInput.value === ACCESS_KEY) {
+                // Success feedback
                 accessKeyInput.classList.remove('input-error');
                 accessKeyInput.classList.add('input-success');
                 loginLogo.classList.remove('error-state');
@@ -508,19 +512,25 @@
                 loginSubtitle.textContent = 'Acceso autorizado';
                 btnLogin.disabled = true;
                 btnLoginText.textContent = 'Acceso autorizado';
-                btnLogin.querySelector('[data-lucide]').setAttribute('data-lucide', 'check');
-                lucide.createIcons();
+                try {
+                    const ico = btnLogin.querySelector('[data-lucide]');
+                    if (ico) { ico.setAttribute('data-lucide', 'check'); reloadIcons(); }
+                } catch(e) {}
                 loginCard.classList.add('success-glow');
 
-                setTimeout(() => loginCard.classList.add('exit'), 600);
-                setTimeout(() => {
+                // Transition to app
+                setTimeout(function() { loginCard.classList.add('exit'); }, 600);
+                setTimeout(function() {
                     loginView.style.display = 'none';
                     appView.style.display = 'block';
-                    requestAnimationFrame(() => requestAnimationFrame(() => appView.classList.add('visible')));
-                    lucide.createIcons();
+                    // Force reflow then animate in
+                    void appView.offsetWidth;
+                    appView.classList.add('visible');
+                    reloadIcons();
                     loadRecords();
                 }, 1000);
             } else {
+                // Error feedback
                 accessKeyInput.classList.remove('input-success');
                 accessKeyInput.classList.add('input-error');
                 loginLogo.classList.remove('success-state');
@@ -548,11 +558,11 @@
                 accessKeyInput.classList.remove('input-success', 'input-error');
                 accessKeyInput.value = '';
                 accessKeyInput.type = 'password';
-                eyeIcon.setAttribute('data-lucide', 'eye');
+                try { eyeIcon.setAttribute('data-lucide', 'eye'); } catch(e) {}
                 btnLogin.disabled = false;
                 btnLoginText.textContent = 'Ingresar';
-                btnLogin.querySelector('[data-lucide]').setAttribute('data-lucide', 'log-in');
-                lucide.createIcons();
+                try { var ico = btnLogin.querySelector('[data-lucide]'); if(ico) ico.setAttribute('data-lucide', 'log-in'); } catch(e) {}
+                reloadIcons();
             }, 300);
         });
 
