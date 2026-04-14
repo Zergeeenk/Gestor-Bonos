@@ -183,53 +183,66 @@
         </form>
 
         <div class="banner" id="banner"></div>
+        <pre id="dbg" style="margin-top:16px;padding:12px;background:#000;color:#0f0;font-size:11px;border-radius:8px;max-height:200px;overflow-y:auto;display:none;white-space:pre-wrap;word-break:break-all;"></pre>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ============================================================
-        // CONFIGURACION — Editar estas dos lineas
-        // ============================================================
+        var dbg = document.getElementById('dbg');
+        function dlog(msg) {
+            dbg.style.display = 'block';
+            dbg.textContent += new Date().toTimeString().slice(0,8) + ' ' + msg + '\n';
+            dbg.scrollTop = dbg.scrollHeight;
+        }
+        window.onerror = function(m,s,l) { dlog('JS ERROR: ' + m + ' line:' + l); };
+
+        dlog('Supabase lib: ' + (typeof window.supabase));
+
         const SUPABASE_URL = 'https://ybapmcjydxuzihtfbpuc.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_rPYIGBIToZwhkuKHpVxgJw_eTjOjhHH';
-        // ============================================================
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            dlog('Client created OK');
+        } catch(e) {
+            dlog('Client FAILED: ' + e.message);
+        }
 
-        const form = document.getElementById('form');
-        const btnSubmit = document.getElementById('btn-submit');
-        const banner = document.getElementById('banner');
+        var form = document.getElementById('form');
+        var btnSubmit = document.getElementById('btn-submit');
+        var banner = document.getElementById('banner');
+
+        dlog('form:' + !!form + ' btn:' + !!btnSubmit);
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            dlog('SUBMIT clicked');
 
-            // Clear errors
-            document.querySelectorAll('.inline-error').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.inline-error').forEach(function(el) { el.classList.remove('show'); });
             banner.className = 'banner';
 
-            // Get values
-            const usuario = document.getElementById('usuario').value.trim();
-            const monto = document.getElementById('monto').value;
-            const agencia = document.getElementById('agencia').value;
+            var usuario = document.getElementById('usuario').value.trim();
+            var monto = document.getElementById('monto').value;
+            var agencia = document.getElementById('agencia').value;
 
-            // Validate
-            let valid = true;
+            dlog('Values - usuario:"' + usuario + '" monto:"' + monto + '" agencia:"' + agencia + '"');
+
+            var valid = true;
             if (!usuario) { document.getElementById('err-usuario').classList.add('show'); valid = false; }
             if (!monto || parseFloat(monto) < 0) { document.getElementById('err-monto').classList.add('show'); valid = false; }
             if (!agencia) { document.getElementById('err-agencia').classList.add('show'); valid = false; }
-            if (!valid) return;
+            if (!valid) { dlog('Validation failed'); return; }
 
-            // Generate date and time
-            const now = new Date();
-            const dia = String(now.getDate()).padStart(2, '0') + '/' +
-                        String(now.getMonth() + 1).padStart(2, '0') + '/' +
-                        now.getFullYear();
-            const hora = String(now.getHours()).padStart(2, '0') + ':' +
-                         String(now.getMinutes()).padStart(2, '0') + ':' +
-                         String(now.getSeconds()).padStart(2, '0');
+            var now = new Date();
+            var dia = String(now.getDate()).padStart(2, '0') + '/' +
+                      String(now.getMonth() + 1).padStart(2, '0') + '/' +
+                      now.getFullYear();
+            var hora = String(now.getHours()).padStart(2, '0') + ':' +
+                       String(now.getMinutes()).padStart(2, '0') + ':' +
+                       String(now.getSeconds()).padStart(2, '0');
 
-            // Build record
-            const record = {
+            var record = {
                 usuario: usuario,
                 monto: parseFloat(monto),
                 agencia: agencia,
@@ -237,11 +250,19 @@
                 hora: hora
             };
 
-            // Insert
+            dlog('Inserting: ' + JSON.stringify(record));
+
             btnSubmit.disabled = true;
             btnSubmit.textContent = 'Guardando...';
 
-            const { error } = await supabase.from('registros').insert([record]);
+            try {
+                var result = await supabase.from('registros').insert([record]);
+                dlog('Result: ' + JSON.stringify(result));
+                var error = result.error;
+            } catch(ex) {
+                dlog('Exception: ' + ex.message);
+                var error = { message: ex.message };
+            }
 
             btnSubmit.disabled = false;
             btnSubmit.textContent = 'Guardar Registro';
