@@ -26,7 +26,7 @@
 
         [data-lucide] { width: 16px; height: 16px; stroke-width: 2; vertical-align: middle; }
 
-        .container { width: 100%; max-width: 420px; }
+        .container { width: 100%; max-width: 560px; }
 
         #login-view { animation: fadeIn 0.5s ease; }
         #app-view { display: none; }
@@ -40,6 +40,7 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
+        /* ===== LOGIN ===== */
         .login-icon {
             width: 56px; height: 56px;
             margin: 0 auto 20px;
@@ -66,13 +67,23 @@
 
         .login-form { animation: fadeIn 0.5s ease 0.2s both; }
 
-        .card-title {
-            font-size: 18px; font-weight: 700; color: #e2e8f0;
+        .login-footer {
+            font-size: 11px; color: #334155; text-align: center;
+            margin-top: 24px; animation: fadeIn 0.5s ease 0.26s both;
         }
 
-        .card-header {
+        /* ===== HEADER ===== */
+        .app-header {
             display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 24px;
+            align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+        }
+
+        .app-title {
+            font-size: 16px; font-weight: 700; color: #e2e8f0;
+        }
+
+        .header-actions {
+            display: flex; align-items: center; gap: 8px;
         }
 
         .btn-logout {
@@ -85,10 +96,37 @@
         .btn-logout:hover { color: #f87171; border-color: rgba(248,113,113,0.3); }
         .btn-logout [data-lucide] { width: 14px; height: 14px; }
 
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex; gap: 4px; margin-bottom: 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px; padding: 4px;
+        }
+
+        .tab {
+            flex: 1; padding: 10px 8px;
+            background: none; border: none; border-radius: 8px;
+            color: #64748b; font-family: 'Inter', sans-serif;
+            font-size: 12.5px; font-weight: 500; cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .tab:hover { color: #94a3b8; }
+        .tab.active {
+            background: rgba(124,58,237,0.15);
+            color: #a78bfa;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .tab [data-lucide] { width: 14px; height: 14px; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+
+        /* ===== FORM ===== */
         .field { margin-bottom: 18px; }
 
         .field label {
-            display: block; font-size: 13px; font-weight: 500;
+            font-size: 13px; font-weight: 500;
             color: #94a3b8; margin-bottom: 6px;
             display: flex; align-items: center; gap: 6px;
         }
@@ -158,11 +196,146 @@
         .inline-error { font-size: 12px; color: #f87171; margin-top: 4px; display: none; }
         .inline-error.show { display: block; }
 
-        .login-footer {
-            font-size: 11px; color: #334155; text-align: center;
-            margin-top: 24px; animation: fadeIn 0.5s ease 0.26s both;
+        /* ===== REGISTROS TABLE ===== */
+        .table-toolbar {
+            display: flex; gap: 8px; margin-bottom: 16px; align-items: center;
         }
 
+        .search-input {
+            flex: 1; padding: 9px 12px 9px 36px; background: #1e1e2e;
+            border: 1px solid #333; border-radius: 8px; color: #fff;
+            font-family: 'Inter', sans-serif; font-size: 13px;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+        .search-input::placeholder { color: #4a5568; }
+
+        .search-wrap { position: relative; flex: 1; }
+        .search-wrap [data-lucide] {
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            color: #4a5568; pointer-events: none;
+        }
+
+        .btn-icon {
+            width: 36px; height: 36px;
+            background: #1e1e2e; border: 1px solid #333; border-radius: 8px;
+            color: #94a3b8; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-icon:hover { border-color: #7c3aed; color: #a78bfa; }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        table {
+            width: 100%; border-collapse: collapse; font-size: 13px;
+        }
+
+        thead th {
+            padding: 10px 14px; text-align: left;
+            font-size: 11px; font-weight: 600; color: #64748b;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 10px 14px; color: #cbd5e1;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            white-space: nowrap;
+        }
+
+        tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+        tbody tr:hover { background: rgba(124,58,237,0.06); }
+
+        .td-monto { font-weight: 600; color: #34d399; }
+
+        .table-empty {
+            padding: 32px; text-align: center; color: #4a5568; font-size: 13px;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 16px;
+            transition: border-color 0.2s;
+        }
+        .stat-card:hover { border-color: rgba(124,58,237,0.2); }
+
+        .stat-card-header {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+        }
+        .stat-card-header [data-lucide] { width: 16px; height: 16px; color: #7c3aed; }
+        .stat-card-label { font-size: 11px; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+        .stat-card-value { font-size: 22px; font-weight: 700; color: #e2e8f0; }
+        .stat-card-sub { font-size: 11px; color: #4a5568; margin-top: 2px; }
+
+        .versus-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; padding: 20px;
+        }
+
+        .versus-title {
+            font-size: 14px; font-weight: 700; text-align: center;
+            color: #94a3b8; margin-bottom: 16px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .versus-title [data-lucide] { color: #7c3aed; }
+
+        .versus-row {
+            display: flex; gap: 12px; margin-bottom: 16px;
+        }
+
+        .versus-col {
+            flex: 1; text-align: center;
+        }
+
+        .versus-col select {
+            width: 100%; padding: 9px 12px; background: #1e1e2e;
+            border: 1px solid #333; border-radius: 8px; color: #fff;
+            font-family: 'Inter', sans-serif; font-size: 13px;
+            outline: none; -webkit-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center;
+            padding-right: 30px;
+            transition: border-color 0.2s;
+        }
+        .versus-col select:focus { border-color: #7c3aed; }
+        .versus-col select option { background: #1e1e2e; color: #fff; }
+
+        .versus-amount {
+            font-size: 24px; font-weight: 700; margin-top: 12px;
+            transition: color 0.3s;
+        }
+        .versus-amount.win { color: #34d399; }
+        .versus-amount.lose { color: #f87171; }
+        .versus-amount.tie { color: #e2e8f0; }
+
+        .versus-vs {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; color: #4a5568; padding-top: 28px;
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .tab span { display: none; }
+            .tab { padding: 10px 12px; }
+        }
+
+        /* ===== ANIMATIONS ===== */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
@@ -217,44 +390,126 @@
         <!-- APP -->
         <div id="app-view">
             <div class="card enter">
-                <div class="card-header">
-                    <div class="card-title">Registro de Cargas</div>
-                    <button class="btn-logout" id="btn-logout">
-                        <i data-lucide="log-out"></i> Salir
+                <div class="app-header">
+                    <div class="app-title">Arkana Systems</div>
+                    <div class="header-actions">
+                        <button class="btn-logout" id="btn-logout">
+                            <i data-lucide="log-out"></i> Salir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="tab active" data-tab="nueva-carga">
+                        <i data-lucide="plus-circle"></i> <span>Nueva Carga</span>
+                    </button>
+                    <button class="tab" data-tab="registros">
+                        <i data-lucide="table-2"></i> <span>Registros</span>
+                    </button>
+                    <button class="tab" data-tab="dashboard">
+                        <i data-lucide="layout-dashboard"></i> <span>Dashboard</span>
                     </button>
                 </div>
 
-                <form id="form" novalidate>
-                    <div class="field">
-                        <label><i data-lucide="user"></i> Usuario</label>
-                        <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
-                        <div class="inline-error" id="err-usuario">Este campo es obligatorio</div>
+                <!-- TAB: NUEVA CARGA -->
+                <div class="tab-content active" id="tab-nueva-carga">
+                    <form id="form" novalidate>
+                        <div class="field">
+                            <label><i data-lucide="user"></i> Usuario</label>
+                            <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
+                            <div class="inline-error" id="err-usuario">Este campo es obligatorio</div>
+                        </div>
+                        <div class="field">
+                            <label><i data-lucide="dollar-sign"></i> Monto</label>
+                            <input type="number" id="monto" placeholder="Ingresa el monto" min="0" step="0.01" required>
+                            <div class="inline-error" id="err-monto">Este campo es obligatorio</div>
+                        </div>
+                        <div class="field">
+                            <label><i data-lucide="building-2"></i> Agencia</label>
+                            <select id="agencia" required>
+                                <option value="" disabled selected>Selecciona una agencia</option>
+                                <option value="BetArgento">BetArgento</option>
+                                <option value="AlantisPlay">AlantisPlay</option>
+                                <option value="Mijugada">Mijugada</option>
+                            </select>
+                            <div class="inline-error" id="err-agencia">Selecciona una agencia</div>
+                        </div>
+                        <button type="submit" class="btn-primary" id="btn-submit">
+                            <i data-lucide="save"></i>
+                            <span id="btn-submit-text">Guardar Registro</span>
+                        </button>
+                    </form>
+                    <div class="banner" id="banner"></div>
+                </div>
+
+                <!-- TAB: REGISTROS -->
+                <div class="tab-content" id="tab-registros">
+                    <div class="table-toolbar">
+                        <div class="search-wrap">
+                            <i data-lucide="search"></i>
+                            <input type="text" class="search-input" id="search-registros" placeholder="Buscar por usuario...">
+                        </div>
+                        <button class="btn-icon" id="btn-refresh" title="Actualizar">
+                            <i data-lucide="refresh-cw"></i>
+                        </button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Monto</th>
+                                    <th>Agencia</th>
+                                    <th>Dia</th>
+                                    <th>Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registros-body">
+                                <tr><td colspan="5" class="table-empty">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB: DASHBOARD -->
+                <div class="tab-content" id="tab-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-card-header"><i data-lucide="users"></i> <span class="stat-card-label">Usuarios</span></div>
+                            <div class="stat-card-value" id="dash-users">--</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-header"><i data-lucide="dollar-sign"></i> <span class="stat-card-label">Total Cargado</span></div>
+                            <div class="stat-card-value" id="dash-total">--</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-header"><i data-lucide="trending-up"></i> <span class="stat-card-label">Promedio</span></div>
+                            <div class="stat-card-value" id="dash-avg">--</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-header"><i data-lucide="clock"></i> <span class="stat-card-label">Ultimo Registro</span></div>
+                            <div class="stat-card-value" id="dash-last" style="font-size:16px">--</div>
+                            <div class="stat-card-sub" id="dash-last-sub"></div>
+                        </div>
                     </div>
 
-                    <div class="field">
-                        <label><i data-lucide="dollar-sign"></i> Monto</label>
-                        <input type="number" id="monto" placeholder="Ingresa el monto" min="0" step="0.01" required>
-                        <div class="inline-error" id="err-monto">Este campo es obligatorio</div>
+                    <div class="versus-section">
+                        <div class="versus-title"><i data-lucide="swords"></i> Versus</div>
+                        <div class="versus-row">
+                            <div class="versus-col">
+                                <select id="vs-user-a"><option value="">Elegir usuario</option></select>
+                                <div class="versus-amount tie" id="vs-amount-a">$0</div>
+                            </div>
+                            <div class="versus-vs">VS</div>
+                            <div class="versus-col">
+                                <select id="vs-user-b"><option value="">Elegir usuario</option></select>
+                                <div class="versus-amount tie" id="vs-amount-b">$0</div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="field">
-                        <label><i data-lucide="building-2"></i> Agencia</label>
-                        <select id="agencia" required>
-                            <option value="" disabled selected>Selecciona una agencia</option>
-                            <option value="BetArgento">BetArgento</option>
-                            <option value="AlantisPlay">AlantisPlay</option>
-                            <option value="Mijugada">Mijugada</option>
-                        </select>
-                        <div class="inline-error" id="err-agencia">Selecciona una agencia</div>
-                    </div>
-
-                    <button type="submit" class="btn-primary" id="btn-submit">
-                        <i data-lucide="save"></i>
-                        <span id="btn-submit-text">Guardar Registro</span>
-                    </button>
-                </form>
-
-                <div class="banner" id="banner"></div>
             </div>
         </div>
     </div>
@@ -262,7 +517,6 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Init Lucide
         lucide.createIcons();
 
         // ============================================================
@@ -271,11 +525,13 @@
         var SUPABASE_URL = 'https://ybapmcjydxuzihtfbpuc.supabase.co';
         var SUPABASE_ANON_KEY = 'sb_publishable_rPYIGBIToZwhkuKHpVxgJw_eTjOjhHH';
         var ACCESS_TOKEN = 'Arkana2025';
+        var SESSION_KEY = 'arkana_session';
         // ============================================================
 
         var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var allRecords = [];
 
-        // ===== LOGIN =====
+        // ===== SESSION =====
         var loginView = document.getElementById('login-view');
         var loginCard = document.getElementById('login-card');
         var loginSub = document.getElementById('login-sub');
@@ -287,6 +543,12 @@
         var appView = document.getElementById('app-view');
         var btnLogout = document.getElementById('btn-logout');
 
+        if (localStorage.getItem(SESSION_KEY)) {
+            loginView.style.display = 'none';
+            appView.style.display = 'block';
+            loadAllRecords();
+        }
+
         // Toggle password
         togglePass.addEventListener('click', function() {
             var isPass = accessKeyInput.type === 'password';
@@ -295,14 +557,12 @@
             lucide.createIcons();
         });
 
-        // Reset on typing
         accessKeyInput.addEventListener('input', function() {
             accessKeyInput.classList.remove('input-error', 'input-success');
             loginSub.className = 'login-sub';
             loginSub.textContent = 'Ingresa el token de acceso';
         });
 
-        // Login
         btnLogin.addEventListener('click', doLogin);
         accessKeyInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
 
@@ -310,6 +570,7 @@
             if (btnLogin.disabled) return;
 
             if (accessKeyInput.value === ACCESS_TOKEN) {
+                localStorage.setItem(SESSION_KEY, 'true');
                 accessKeyInput.classList.remove('input-error');
                 accessKeyInput.classList.add('input-success');
                 loginSub.className = 'login-sub success';
@@ -324,6 +585,7 @@
                     loginView.style.display = 'none';
                     appView.style.display = 'block';
                     lucide.createIcons();
+                    loadAllRecords();
                 }, 850);
             } else {
                 accessKeyInput.classList.remove('input-success');
@@ -337,8 +599,8 @@
             }
         }
 
-        // Logout
         btnLogout.addEventListener('click', function() {
+            localStorage.removeItem(SESSION_KEY);
             appView.style.display = 'none';
             loginView.style.display = 'block';
             loginCard.classList.remove('exit');
@@ -354,6 +616,26 @@
             if (loginIcon) { loginIcon.setAttribute('data-lucide', 'log-in'); }
             lucide.createIcons();
         });
+
+        // ===== TABS =====
+        document.querySelectorAll('.tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+                document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                tab.classList.add('active');
+                var target = document.getElementById('tab-' + tab.getAttribute('data-tab'));
+                if (target) target.classList.add('active');
+
+                if (tab.getAttribute('data-tab') === 'registros') renderRegistros();
+                if (tab.getAttribute('data-tab') === 'dashboard') renderDashboard();
+            });
+        });
+
+        // ===== LOAD DATA =====
+        async function loadAllRecords() {
+            var { data, error } = await supabase.from('registros').select('*').order('id', { ascending: false });
+            if (!error && data) allRecords = data;
+        }
 
         // ===== FORM =====
         var form = document.getElementById('form');
@@ -385,13 +667,7 @@
                        String(now.getMinutes()).padStart(2, '0') + ':' +
                        String(now.getSeconds()).padStart(2, '0');
 
-            var record = {
-                usuario: usuario,
-                monto: parseFloat(monto),
-                agencia: agencia,
-                dia: dia,
-                hora: hora
-            };
+            var record = { usuario: usuario, monto: parseFloat(monto), agencia: agencia, dia: dia, hora: hora };
 
             btnSubmit.disabled = true;
             var submitIcon = btnSubmit.querySelector('[data-lucide]');
@@ -414,10 +690,128 @@
                 banner.className = 'banner success';
                 lucide.createIcons();
                 form.reset();
+                loadAllRecords();
             }
 
             setTimeout(function() { banner.className = 'banner'; }, 3000);
         });
+
+        // ===== REGISTROS TAB =====
+        var searchInput = document.getElementById('search-registros');
+        searchInput.addEventListener('input', renderRegistros);
+
+        document.getElementById('btn-refresh').addEventListener('click', async function() {
+            await loadAllRecords();
+            renderRegistros();
+        });
+
+        function renderRegistros() {
+            var tbody = document.getElementById('registros-body');
+            var q = searchInput.value.trim().toLowerCase();
+            var filtered = allRecords.filter(function(r) {
+                return !q || r.usuario.toLowerCase().indexOf(q) !== -1;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Sin registros aun</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(function(r) {
+                return '<tr>' +
+                    '<td>' + esc(r.usuario) + '</td>' +
+                    '<td class="td-monto">$' + fmtAR(r.monto) + '</td>' +
+                    '<td>' + esc(r.agencia) + '</td>' +
+                    '<td>' + esc(r.dia) + '</td>' +
+                    '<td>' + esc(r.hora) + '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        // ===== DASHBOARD TAB =====
+        function renderDashboard() {
+            var users = [];
+            var totalMonto = 0;
+            var userTotals = {};
+
+            allRecords.forEach(function(r) {
+                if (users.indexOf(r.usuario) === -1) users.push(r.usuario);
+                totalMonto += Number(r.monto);
+                userTotals[r.usuario] = (userTotals[r.usuario] || 0) + Number(r.monto);
+            });
+
+            var avg = allRecords.length > 0 ? totalMonto / allRecords.length : 0;
+            var last = allRecords.length > 0 ? allRecords[0] : null;
+
+            document.getElementById('dash-users').textContent = users.length;
+            document.getElementById('dash-total').textContent = '$' + fmtAR(totalMonto);
+            document.getElementById('dash-avg').textContent = '$' + fmtAR(avg);
+
+            if (last) {
+                document.getElementById('dash-last').textContent = esc(last.usuario);
+                document.getElementById('dash-last-sub').textContent = '$' + fmtAR(last.monto) + ' - ' + last.dia + ' ' + last.hora;
+            } else {
+                document.getElementById('dash-last').textContent = '--';
+                document.getElementById('dash-last-sub').textContent = '';
+            }
+
+            // Versus dropdowns
+            var vsA = document.getElementById('vs-user-a');
+            var vsB = document.getElementById('vs-user-b');
+            var prevA = vsA.value;
+            var prevB = vsB.value;
+
+            var opts = '<option value="">Elegir usuario</option>' +
+                users.map(function(u) { return '<option value="' + esc(u) + '">' + esc(u) + '</option>'; }).join('');
+            vsA.innerHTML = opts;
+            vsB.innerHTML = opts;
+
+            if (prevA) vsA.value = prevA;
+            if (prevB) vsB.value = prevB;
+
+            updateVersus(userTotals);
+
+            vsA.onchange = function() { updateVersus(userTotals); };
+            vsB.onchange = function() { updateVersus(userTotals); };
+
+            lucide.createIcons();
+        }
+
+        function updateVersus(userTotals) {
+            var a = document.getElementById('vs-user-a').value;
+            var b = document.getElementById('vs-user-b').value;
+            var amtA = a ? (userTotals[a] || 0) : 0;
+            var amtB = b ? (userTotals[b] || 0) : 0;
+
+            var elA = document.getElementById('vs-amount-a');
+            var elB = document.getElementById('vs-amount-b');
+
+            elA.textContent = '$' + fmtAR(amtA);
+            elB.textContent = '$' + fmtAR(amtB);
+
+            if (!a || !b || amtA === amtB) {
+                elA.className = 'versus-amount tie';
+                elB.className = 'versus-amount tie';
+            } else if (amtA > amtB) {
+                elA.className = 'versus-amount win';
+                elB.className = 'versus-amount lose';
+            } else {
+                elA.className = 'versus-amount lose';
+                elB.className = 'versus-amount win';
+            }
+        }
+
+        // ===== UTILS =====
+        function fmtAR(n) {
+            return Math.round(Number(n)).toLocaleString('es-AR');
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            var d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
     </script>
 </body>
 </html>
